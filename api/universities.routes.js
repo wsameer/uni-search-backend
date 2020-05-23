@@ -24,7 +24,7 @@ const universitiesRoutes = (router) => {
    * GET
    * Get Open graph meta data about the university
    */
-  router.get('/university/:url', Universities.getUniversityOpenGraphData);
+  router.get('/universities/og/:url', Universities.getUniversityOpenGraphData);
 
   /**
    * GET

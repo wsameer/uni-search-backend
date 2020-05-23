@@ -136,6 +136,7 @@ exports.getUniversities = (req, res, next) => {
     return res.status(200).json({
       total_count: 0,
       data: null,
+      current_count: 0,
       message: 'No data found',
       limit: limit,
       next: start
@@ -143,41 +144,21 @@ exports.getUniversities = (req, res, next) => {
   }
 
   if (finalResult.length > start) {
+    let totalCount = finalResult.length;
     finalResult = finalResult.slice(start, limit + start);
 
     return res.status(200).json({
-      total_count: finalResult.length,
+      total_count: totalCount,
+      current_count: finalResult.length,
       data: finalResult,
       limit: limit,
       next: start + limit
     });
 
-    // let promises = [];
-    // for (let i = 0; i < finalResult.length; i++) {
-    //   console.log(finalResult[i].web_page);
-    //   promises.push(Handlers.getOpenGraphData(finalResult[i].web_page));
-    // }
-
-    // Promise.all(promises).then((data) => {
-    //   // all done here
-    //   console.log(data);
-    //   return res.status(200).json({
-    //     total_count: finalResult.length,
-    //     data: finalResult,
-    //     limit: limit,
-    //     next: start + limit
-    //   });
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    //   return res.status(500).json({
-    //     error: error
-    //   });
-    // });
-
   } else {
     return res.status(200).json({
       total_count: 0,
+      current_count: 0,
       data: null,
       message: 'Pagination out of bounds',
       limit: limit,
