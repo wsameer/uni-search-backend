@@ -1,124 +1,197 @@
-# Welcome to SW-PARKING!
+**Get all domains**
+----
+  Returns json data containing all the unique university domains 
 
-The backend of a multi storey parking lot system. This system function in the form of APIs, built in **Node JS** and **Express.js**.
+* **URL**
 
-# Install
-Open terminal window; navigate to this folder and type the following commands:
+	  api/universities/domains
 
-    npm install
-   
-# Run the App
-    npm start
+* **Method:**
 
-# APIs to operate the Parking Lot
-## Get count
-Returns the count of total spaces in the parking lot
-###  Request
+  `GET`
+  
+*  **URL Params**
 
-    GET /parkinglots/
-    curl -i -H 'Accept: application/json' http://localhost:3000/parkinglots/
-### Parameters
-NA
+    `None`
 
-### Response
+* **Success Response:**
 
-    enter code here
+  * **Code:** 200 <br />
+    **Content:** `{ "result_count": 7, "data": ["org", "edu", "zm", "us", "net", "ca", "com"] }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 <br />
+    **Content:** `{ error : { message: "Internal server error" } }`
+
+  OR
+
+  * **Code:** 403 <br />
+    **Content:** `{ error : "Invalid parameters" }`
+
+* **Sample Call:**
+
+  ```javascript
+    axios.get('.../api/universities/domains')
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+  ```
 
 
+**Get all country codes**
+----
+  Returns json data containing all the unique country codes 
 
-## Get nearest free parking slot
-Returns the nearest free parking space number as per the vehicle type.
-###  Request
+* **URL**
 
-    GET /parkinglots/find/parking
+	  api/universities/countrycodes
 
-### Parameters
+* **Method:**
 
-    ?vehicleType=[1/2/3]
-    // 1 is for motorcycle
-    // 2 is for cars
-    // 3 is for trucks
+  `GET`
+  
+*  **URL Params**
 
-### Response
+    `None`
 
-    enter code here
-## Get the vehicle location and type
-For given registration number OR vehicle type, get the details of the parked location of that vehicle.
-###  Request
+* **Success Response:**
 
-    GET /parkinglots/find/vehicle
+  * **Code:** 200 <br />
+    **Content:** `{ "result_count": 4, "data": ["DZ","AL","AF","US"] }`
+ 
+* **Error Response:**
 
-### Parameters
+  * **Code:** 500 <br />
+    **Content:** `{ error : { message: "Internal server error" } }`
 
-    ?vehicleType=[1/2/3] OR ?registrationNumber=MH-01-FB-2323
-    // 1 is for motorcycle
-    // 2 is for cars
-    // 3 is for trucks
+  OR
 
-### Response
+  * **Code:** 403 <br />
+    **Content:** `{ error : "Invalid parameters" }`
 
-    enter code here
-## Park a vehicle
-Parks the vehicle with given registration number at the designated spots.
+* **Sample Call:**
 
- 1. **Motorcycle** requires 1 spot for parking.
- 2. **Car** requires 2 spots for parking. 
- 3. **Truck** requires 5 spots for parking.
+  ```javascript
+    axios.get('.../api/universities/countrycodes')
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+  ```
 
-###  Request
+**Search Universities**
+----
+  Returns json data containing the university names matching the search keywords. The result is based on a fuzzy search done on the total records found with a threshold of 0.2/0.3 and 0.4 depending on the length of the search keyword. 
 
-    POST /parkinglots/park
-### Parameters
+* **URL**
 
+	  api/universities/search
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+ 
+	   `q=[string]      // The search query`
+	   `limit=[integer] // The total number of records the API should return`
+	   `start=[integer]  // The total number of record from the start to be skipped`
+
+	If the `q` parameter is skipped, then the API will return all the data starting from first record in the database till the `limit`. By default, the `limit`  is 10, and `start` is 0.
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{
+  "total_count": 26,
+  "current_count": 5,
+  "data": [
     {
-	    "registrationNumber": "MH-01-FB-2323",
-	    "slots": "1,2",
-	    "vehicleType": "1"
-    }
-
-### Response
-
-    enter code here
-    
-## Create/Add a parking spaces
-Add a given number of spaces to the parking lot
-###  Request
-
-    POST /parkinglots/create
-
-### Parameters
-
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "hsc.unt.edu",
+      "name": "University of North Texas Health Science Center",
+      "web_page": "http://www.hsc.unt.edu/"
+    },
     {
-	    "slots": "100"
-    }
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "swmed.edu",
+      "name": "University of Texas Southwestern Medical Center at Dallas",
+      "web_page": "http://www.swmed.edu/"
+    },
+	{...}
+  ],
+  "limit": 5,
+  "next": 5
+}`
+ 
+* **Error Response:**
 
-### Response
+  * **Code:** 500 <br />
+    **Content:** `{ error : { message: "Internal server error" } }`
 
-    enter code here
+  OR
 
-## Get the status of parking lot
-Get the status of the entire parking lot.
-###  Request
+  * **Code:** 200  <br />
+    **Content:** `{ total_count: 0,
+      current_count: 0,
+      data: null,
+      message: 'Pagination out of bounds',
+      limit: 10,
+      next: 0 }`
 
-    GET /parkinglots/status
+OR
 
-### Parameters
-NA
+* **Sample Call:**
 
-### Response
+  ```javascript
+    axios.get('.../api/universities/search?q=texas&limit=5&start=0')
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+  ```
 
-    enter code here
-##  Unpark a vehicle
-Remove the given vehicle from its designated spot. The spot is now available for other vehicles to be parked.
+**Get University's Details**
+----
+  Returns json data containing the university's `og:title, og:image, og:description` from the URL’s
 
-###  Request
+* **URL**
 
-    DELETE /parkinglots/unpark
+	  api/universities/og/:url
 
-### Parameters
+* **Method:**
 
-    ?registrationNumber=MH-01-FB-2323
+  `GET`
+  
+*  **URL Params**
+ 
+	   `url=[string]      // The url-encoded web_page of the university`
 
-### Response
+* **Success Response:**
 
-    enter code here
+  * **Code:** 200 <br />
+    **Content:** `{
+  "data": {
+    "ogTitle": "Home page",
+    "ogImage": "https://www.agnesscott.edu/files/images/og-images/aerial29.jpg",
+    "ogDescription": "A private, liberal arts women's college in metropolitan Atlanta, Georgia. Founded in 1889, Agnes Scott College educates women to think deeply, live honorably and engage the intellectual and social challenges of their times."
+  }
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 500 <br />
+    **Content:** `{ error : { message: "Internal server error" } }`
+
+  OR
+
+  * **Code:** 404  <br />
+    **Content:** `{"error":{"message":"Path Not found"}}`
+
+OR
+
+* **Sample Call:**
+
+  ```javascript
+    axios.get('.../api/universities/og/http%3A%2F%2Fwww.agnesscott.edu%2F')
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+  ```
