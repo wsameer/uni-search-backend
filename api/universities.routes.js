@@ -4,15 +4,27 @@ const universitiesRoutes = (router) => {
 
   /**
    * GET
+   * Returns a list of all domains
+   */    
+  router.get('/universities/domains', Universities.getAllDomains);
+
+  /**
+   * GET
+   * Returns a list of all the country codes
+   */ 
+  router.get('/universities/countrycodes', Universities.getCountryCodes);
+
+  /**
+   * GET
    * Check the health of the API
    */
   router.get('/universities/health', (req, res) => res.json({ ok: true }));
 
   /**
    * GET
-   * All the universities
+   * Get Open graph meta data about the university
    */
-  router.get('/universities/get', Universities.getUniversities);
+  router.get('/university/:url', Universities.getUniversityOpenGraphData);
 
   /**
    * GET
@@ -21,7 +33,7 @@ const universitiesRoutes = (router) => {
    * @param {number} limit The total number of records the API should return
    * @param {number} skip The total number of record from the skipped to be skipped
    */
-  router.get('/universities/search/', Universities.getUniversity);
+  router.get('/universities/search', Universities.getUniversities);
 
 };
 
