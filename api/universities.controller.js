@@ -50,14 +50,12 @@ exports.getCountryCodes = (req, res, next) => {
 };
 
 exports.getUniversities = (req, res, next) => {
-
-  let limit = 5;
+  let limit = 10;
   let start = 0;
   let universityName = '';
   let countryCode = '';
   let domain = '';
   let finalResult = [];
-  let message = '';
 
   const options = {
     keys: [],
@@ -66,8 +64,7 @@ exports.getUniversities = (req, res, next) => {
 
   // mandatory parameters
   if (req.query.limit) {
-    console.log(req.query.limit);
-    limit = Number.isInteger(parseInt(req.query.limit, 10)) ? parseInt(req.query.limit, 10) : 5;
+    limit = Number.isInteger(parseInt(req.query.limit, 10)) ? parseInt(req.query.limit, 10) : 10;
   }
 
   if (req.query.start) {
@@ -85,7 +82,6 @@ exports.getUniversities = (req, res, next) => {
 
   if (universityName !== '') {
     // fuzzy  search
-    console.log(options);
     const fuse = new Fuse(UNIVERSITIES, options);
     const result = fuse.search(universityName);
     for (var i = result.length - 1; i >= 0; i--) {
@@ -97,39 +93,29 @@ exports.getUniversities = (req, res, next) => {
     finalResult = UNIVERSITIES;
   }
 
-  console.log(`Total record count matching are ${finalResult.length}`);
-
   if (req.query.code != null) {
-    console.log('countryCode is here');
     countryCode = decodeURIComponent(req.query.code).toLowerCase();
-    console.log(`country code to search is ${countryCode}`);
     let filteredData = finalResult.filter((uni, index) => {
       if (uni.alpha_two_code) {
         return uni.alpha_two_code.toLowerCase() === countryCode;
       }
     });
-
-    console.log(`Filtered data length is ${filteredData.length}`);
     finalResult = filteredData;
   }
 
   if (req.query.domain != null) {
-    // console.log('countryCode is here');
     domain = decodeURIComponent(req.query.domain).toLowerCase();
-
     let filteredData = finalResult.filter((uni, index) => {
       if (uni.domain) {
         let endDomain = uni.domain.split(/[.]+/).pop();
         return endDomain.toLowerCase() === domain;
       }
     });
-
-    console.log(`Filtered data length is ${filteredData.length}`);
     finalResult = filteredData;
   }
 
   // last check
-  console.log(`Final record count is ${finalResult.length}`);
+  // console.log(`Final record count is ${finalResult.length}`);
 
   // No data found
   if (finalResult.length < 1) {
@@ -179,7 +165,6 @@ exports.getUniversityOpenGraphData = (req, res, next) => {
         });
       })
       .catch(err => {
-        console.log('fsdsadasda');
         return res.status(400).json({
           error: err.error,
           message: err.message
@@ -190,5 +175,5 @@ exports.getUniversityOpenGraphData = (req, res, next) => {
       message: "Invalid parameters"
     });
   }
-  
+
 };

@@ -1,11 +1,8 @@
-const Fuse = require('fuse.js');
-const UNIVERSITIES = require('../config/universities.json');
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 
 const Handlers = (() => {
   function setFuzzyThreshold(strLength) {
-    // console.log(`Character length is ${strLength}`);
     if (!strLength) {
       return 0.4;
     }
@@ -28,7 +25,7 @@ const Handlers = (() => {
 
         let ogImage = $('meta[property="og:image"]').attr('content');
         if (!ogImage) {
-        	ogImage = '';
+          ogImage = '';
         }
 
         let ogTitle = $('meta[property="og:title"]').attr('content');
@@ -41,11 +38,11 @@ const Handlers = (() => {
           ogDescription = $('meta[name="description"]').attr('content');
         }
 
-        console.log(`url is ${url}`);
-        console.log(`ogImage is ${ogImage}`);
-        console.log(`ogTitle is ${ogTitle}`);
-        console.log(`ogDescription is ${ogDescription}`);
-        console.log('\n');
+        // console.log(`url is ${url}`);
+        // console.log(`ogImage is ${ogImage}`);
+        // console.log(`ogTitle is ${ogTitle}`);
+        // console.log(`ogDescription is ${ogDescription}`);
+        // console.log('\n');
 
         return {
           'ogTitle': ogTitle,
@@ -54,14 +51,8 @@ const Handlers = (() => {
         };
       })
       .catch(function (err) {
-      	console.log(err.error);
-      	throw err;
-      	
-       //  //handle error
-       //  return {
-       //    error: err.error,
-       //    message: err.message
-       //  };
+        console.log(err.error);
+        throw err;
       });
   }
 
@@ -69,6 +60,7 @@ const Handlers = (() => {
     setFuzzyThreshold: setFuzzyThreshold,
     getOpenGraphData: getOpenGraphData
   }
+
 })();
 
 module.exports = Handlers;
