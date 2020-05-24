@@ -114,9 +114,6 @@ exports.getUniversities = (req, res, next) => {
     finalResult = filteredData;
   }
 
-  // last check
-  // console.log(`Final record count is ${finalResult.length}`);
-
   // No data found
   if (finalResult.length < 1) {
     return res.status(200).json({

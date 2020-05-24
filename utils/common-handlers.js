@@ -38,12 +38,6 @@ const Handlers = (() => {
           ogDescription = $('meta[name="description"]').attr('content');
         }
 
-        // console.log(`url is ${url}`);
-        // console.log(`ogImage is ${ogImage}`);
-        // console.log(`ogTitle is ${ogTitle}`);
-        // console.log(`ogDescription is ${ogDescription}`);
-        // console.log('\n');
-
         return {
           'ogTitle': ogTitle,
           'ogImage': ogImage,
