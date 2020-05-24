@@ -91,9 +91,9 @@
   
 *  **URL Params**
  
-	   `q=[string]      // The search query`
-	   `limit=[integer] // The total number of records the API should return`
-	   `start=[integer]  // The total number of record from the start to be skipped`
+	   q=[string]      // The search query
+	   limit=[integer] // The total number of records the API should return
+	   start=[integer]  // The total number of record from the start to be skipped
 
 	If the `q` parameter is skipped, then the API will return all the data starting from first record in the database till the `limit`. By default, the `limit`  is 10, and `start` is 0.
 
@@ -118,7 +118,7 @@
       "name": "University of Texas Southwestern Medical Center at Dallas",
       "web_page": "http://www.swmed.edu/"
     },
-	{...}
+    {...}
   ],
   "limit": 5,
   "next": 5
@@ -163,7 +163,7 @@ OR
   
 *  **URL Params**
  
-	   `url=[string]      // The url-encoded web_page of the university`
+	   url=[string]      // The url-encoded web_page of the university`
 
 * **Success Response:**
 
