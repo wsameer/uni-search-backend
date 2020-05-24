@@ -7,14 +7,10 @@ const Handlers = (() => {
       return 0.4;
     }
 
-    if (strLength < 4) {
-      return 0.4;
-    } else if (strLength > 3 && strLength < 7) {
+    if (strLength > 6) {
       return 0.3;
-    } else if (strLength > 6) {
-      return 0.2;
     }
-
+    
     return 0.4;
   }
 
